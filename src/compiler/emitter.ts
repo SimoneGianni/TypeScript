@@ -138,6 +138,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, Promi
             let generatedNameSet: Map<string> = {};
             let nodeToGeneratedName: string[] = [];
             let computedPropertyNamesToGeneratedNames: string[];
+            let foundClassDecorators: ClassLikeDeclaration[] = [];
 
             let extendsEmitted = false;
             let decorateEmitted = false;
@@ -4639,8 +4640,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, Promi
                 emitMemberFunctionsForES5AndLower(node);
                 emitPropertyDeclarations(node, getInitializedProperties(node, /*static:*/ true));
                 writeLine();
-                emitDecoratorsOfClass(node);
-                writeLine();
+                // SG removed from here
+                //emitDecoratorsOfClass(node); 
+                //writeLine();
+                // SG replaced with this
+                foundClassDecorators.push(node);
+                // /SG
                 emitToken(SyntaxKind.CloseBraceToken, node.members.end, () => {
                     write("return ");
                     emitDeclarationName(node);
@@ -4833,6 +4838,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, Promi
                     let decoratorCount = decorators ? decorators.length : 0;
                     let argumentsWritten = emitList(decorators, 0, decoratorCount, /*multiLine*/ true, /*trailingComma*/ false, /*leadingComma*/ false, /*noTrailingNewLine*/ true, decorator => {
                         emitStart(decorator);
+                        // SG problem here with the expression, it should use fully quialified names
+                        // now, but I don't know how to do that
                         emit(decorator.expression);
                         emitEnd(decorator);
                     });
@@ -4844,7 +4851,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, Promi
                     writeLine();
                     write("], ");
                     emitStart(member.name);
-                    emitClassMemberPrefix(node, member);
+                    // SG problem with classes inside modules
+                    emitModuleMemberName(node);
+                    write(".prototype");
+                    //emitClassMemberPrefix(node, member);
                     write(", ");
                     emitExpressionForPropertyName(member.name);
                     emitEnd(member.name);
@@ -6738,9 +6748,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, Promi
                     emitCaptureThisForNodeIfNecessary(node);
                     emitLinesStartingAt(node.statements, startIndex);
                     emitTempDeclarations(/*newLine*/ true);
+                    // SG emit the found decorators at the end of file
+                    emitFinalDecorators();
                 }
 
                 emitLeadingComments(node.endOfFileToken);
+            }
+    
+            function emitFinalDecorators(): void {
+                for (var i = 0; i < foundClassDecorators.length; i++) {
+                    emitDecoratorsOfClass(foundClassDecorators[i]);
+                }
+                foundClassDecorators = [];
             }
 
             function emitNodeWithCommentsAndWithoutSourcemap(node: Node): void {

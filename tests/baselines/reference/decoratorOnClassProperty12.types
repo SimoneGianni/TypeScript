@@ -1,0 +1,28 @@
+=== tests/cases/conformance/decorators/class/property/decoratorOnClassProperty12.ts ===
+declare function dec(smt :any): <T>(target: any, propertyKey: string) => void;
+>dec : (smt: any) => <T>(target: any, propertyKey: string) => void
+>smt : any
+>T : T
+>target : any
+>propertyKey : string
+
+class C {
+>C : C
+
+    @dec(C.D) prop;
+>dec(C.D) : <T>(target: any, propertyKey: string) => void
+>dec : (smt: any) => <T>(target: any, propertyKey: string) => void
+>C.D : typeof C.D
+>C : typeof C
+>D : typeof C.D
+>prop : any
+}
+
+module C {
+>C : typeof C
+
+    export class D {
+>D : D
+        
+    }
+}

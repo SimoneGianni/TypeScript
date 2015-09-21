@@ -1,0 +1,35 @@
+=== tests/cases/conformance/decorators/class/property/decoratorOnClassProperty14.ts ===
+declare function dec(smt :any): <T>(target: any, propertyKey: string) => void;
+>dec : Symbol(dec, Decl(decoratorOnClassProperty14.ts, 0, 0))
+>smt : Symbol(smt, Decl(decoratorOnClassProperty14.ts, 0, 21))
+>T : Symbol(T, Decl(decoratorOnClassProperty14.ts, 0, 33))
+>target : Symbol(target, Decl(decoratorOnClassProperty14.ts, 0, 36))
+>propertyKey : Symbol(propertyKey, Decl(decoratorOnClassProperty14.ts, 0, 48))
+
+class C {
+>C : Symbol(C, Decl(decoratorOnClassProperty14.ts, 0, 78), Decl(decoratorOnClassProperty14.ts, 4, 1))
+
+    @dec(C.D) prop;
+>dec : Symbol(dec, Decl(decoratorOnClassProperty14.ts, 0, 0))
+>C.D : Symbol(C.D, Decl(decoratorOnClassProperty14.ts, 6, 10))
+>C : Symbol(C, Decl(decoratorOnClassProperty14.ts, 0, 78), Decl(decoratorOnClassProperty14.ts, 4, 1))
+>D : Symbol(C.D, Decl(decoratorOnClassProperty14.ts, 6, 10))
+>prop : Symbol(prop, Decl(decoratorOnClassProperty14.ts, 2, 9))
+}
+
+module C {
+>C : Symbol(C, Decl(decoratorOnClassProperty14.ts, 0, 78), Decl(decoratorOnClassProperty14.ts, 4, 1))
+
+    export class D {
+>D : Symbol(D, Decl(decoratorOnClassProperty14.ts, 6, 10))
+        
+    }
+    export class E {
+>E : Symbol(E, Decl(decoratorOnClassProperty14.ts, 9, 5))
+
+        @dec(D) prop;
+>dec : Symbol(dec, Decl(decoratorOnClassProperty14.ts, 0, 0))
+>D : Symbol(D, Decl(decoratorOnClassProperty14.ts, 6, 10))
+>prop : Symbol(prop, Decl(decoratorOnClassProperty14.ts, 10, 20))
+    }
+}
